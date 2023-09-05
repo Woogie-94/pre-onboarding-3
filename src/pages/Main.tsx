@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useReducer, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -14,7 +14,7 @@ import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
   const [isFocus, setIsFocus] = useState(false);
-  const [focusIndex, setFocusIndex] = useState(-1);
+  const [focusIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
   const { value, onChange } = useInput("");
   const { data, refetch } = useSearchQuery(value);
   const debounce = useDebounce();
@@ -30,7 +30,7 @@ const Main = () => {
   };
 
   const handleChange = (value: string) => {
-    setFocusIndex(-1);
+    dispatch({ type: "RESET_INDEX" });
     onChange(value);
   };
 
@@ -41,10 +41,10 @@ const Main = () => {
 
     switch (e.key) {
       case "ArrowDown":
-        setFocusIndex(prev => (prev >= data.length - 1 ? data.length - 1 : prev + 1));
+        dispatch({ type: "NEXT_INDEX", maxLength: data.length - 1 });
         break;
       case "ArrowUp":
-        setFocusIndex(prev => (prev > 0 ? prev - 1 : 0));
+        dispatch({ type: "PREV_INDEX" });
         break;
     }
   };
@@ -84,6 +84,21 @@ const Main = () => {
 };
 
 export default Main;
+
+type Action = { type: "NEXT_INDEX"; maxLength: number } | { type: "PREV_INDEX" } | { type: "RESET_INDEX" };
+const START_KEY_INDEX = -1;
+const keyControlReducer = (state: number, action: Action) => {
+  switch (action.type) {
+    case "NEXT_INDEX":
+      return state >= action.maxLength ? action.maxLength : state + 1;
+    case "PREV_INDEX":
+      return state <= 0 ? 0 : state - 1;
+    case "RESET_INDEX":
+      return START_KEY_INDEX;
+    default:
+      return state;
+  }
+};
 
 const Wrapper = styled.div`
   display: flex;
