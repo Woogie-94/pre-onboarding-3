@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 
+import Header from "../components/common/Header";
 import SearchInput from "../components/search/SearchInput";
 import SearchResult from "../components/search/SearchResult";
 import useDebounce from "../hooks/useDebounce";
@@ -35,6 +36,7 @@ const Main = () => {
 
   return (
     <Background>
+      <Header />
       <Wrapper>
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
