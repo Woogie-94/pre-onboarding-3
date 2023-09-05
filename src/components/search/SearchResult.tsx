@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 import SearchSvg from "../../assets/svg/SearchSvg";
 import { Sick } from "../../services/search";
+import { customScroll } from "../../styles";
 
 interface Props {
   result: Sick[];
@@ -45,15 +46,7 @@ const ItemList = styled.ul`
   overflow-y: auto;
   max-height: 500px;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #6a737b40;
-
-    border-radius: 10px;
-  }
+  ${customScroll}
 `;
 
 const ItemWrapper = styled.li`
