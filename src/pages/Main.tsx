@@ -4,19 +4,18 @@ import { styled } from "styled-components";
 import SearchInput from "../components/SearchInput";
 import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
-import { getSearchResult } from "../services/search";
+import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
   const { value, onChange } = useInput("");
+  const { data, refetch } = useSearchQuery(value);
   const debounce = useDebounce();
 
   useEffect(() => {
     if (value) {
-      debounce(() => {
-        getSearchResult(value).then(res => console.log(res.data));
-      }, 200);
+      debounce(refetch, 200);
     }
-  }, [value, debounce]);
+  }, [value, debounce, refetch]);
 
   return (
     <Wrapper>
