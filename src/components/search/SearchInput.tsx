@@ -29,7 +29,7 @@ const SearchInput = ({ value, isFocus, onChange, onFocus }: Props) => {
         <CloseSvg width="10" height="10" />
       </DeleteWrapper>
       <SearchButton>
-        <SearchSvg />
+        <SearchSvg width="20" height="20" />
       </SearchButton>
     </Wrapper>
   );
