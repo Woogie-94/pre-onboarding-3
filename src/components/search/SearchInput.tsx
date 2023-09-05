@@ -1,33 +1,24 @@
-import { useState } from "react";
 import { styled } from "styled-components";
 
-import Input from "./Input";
-import CloseSvg from "../assets/svg/CloseSvg";
-import SearchSvg from "../assets/svg/SearchSvg";
+import CloseSvg from "../../assets/svg/CloseSvg";
+import SearchSvg from "../../assets/svg/SearchSvg";
+import Input from "../common/Input";
 
 interface Props {
   value: string;
+  isFocus: boolean;
   onChange: (value: string) => void;
+  onFocus: () => void;
 }
 
-const SearchInput = ({ value, onChange }: Props) => {
-  const [isFocus, setIsFocus] = useState(false);
-
+const SearchInput = ({ value, isFocus, onChange, onFocus }: Props) => {
   const handleReset = () => {
     onChange("");
   };
 
-  const handleFocus = () => {
-    setIsFocus(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocus(false);
-  };
-
   return (
     <Wrapper $isFocus={isFocus}>
-      <Input value={value} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} />
+      <Input value={value} onChange={onChange} onFocus={onFocus} />
       <DeleteWrapper $isFocus={isFocus} onClick={handleReset}>
         <CloseSvg width="10" height="10" />
       </DeleteWrapper>

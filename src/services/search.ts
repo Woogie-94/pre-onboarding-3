@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface Sick {
+export interface Sick {
   sickCd: string;
   sickNm: string;
 }
