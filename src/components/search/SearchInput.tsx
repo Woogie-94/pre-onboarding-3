@@ -18,7 +18,7 @@ const SearchInput = ({ value, isFocus, onChange, onFocus }: Props) => {
 
   return (
     <Wrapper $isFocus={isFocus}>
-      {!isFocus && (
+      {!isFocus && !value && (
         <Placeholder>
           <SearchSvg width="16" height="16" fill="#A7AFB7" />
           <p>질환명을 입력해주세요.</p>
