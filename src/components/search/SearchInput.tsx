@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 
-import Input from "./common/Input";
-import CloseSvg from "../assets/svg/CloseSvg";
-import SearchSvg from "../assets/svg/SearchSvg";
+import CloseSvg from "../../assets/svg/CloseSvg";
+import SearchSvg from "../../assets/svg/SearchSvg";
+import Input from "../common/Input";
 
 interface Props {
   value: string;

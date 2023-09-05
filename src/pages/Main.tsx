@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { styled } from "styled-components";
 
-import SearchInput from "../components/SearchInput";
+import SearchInput from "../components/search/SearchInput";
 import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
 import useSearchQuery from "../queries/useSearchQuery";
