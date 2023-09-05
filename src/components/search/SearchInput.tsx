@@ -18,6 +18,12 @@ const SearchInput = ({ value, isFocus, onChange, onFocus }: Props) => {
 
   return (
     <Wrapper $isFocus={isFocus}>
+      {!isFocus && (
+        <Placeholder>
+          <SearchSvg width="16" height="16" fill="#A7AFB7" />
+          <p>질환명을 입력해주세요.</p>
+        </Placeholder>
+      )}
       <Input value={value} onChange={onChange} onFocus={onFocus} />
       <DeleteWrapper $isFocus={isFocus} onClick={handleReset}>
         <CloseSvg width="10" height="10" />
@@ -32,6 +38,7 @@ const SearchInput = ({ value, isFocus, onChange, onFocus }: Props) => {
 export default SearchInput;
 
 const Wrapper = styled.div<{ $isFocus: boolean }>`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,4 +67,16 @@ const SearchButton = styled.button`
   height: 48px;
   background-color: #007be9;
   border-radius: 50%;
+`;
+
+const Placeholder = styled.div`
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  color: #a7afb7;
 `;
