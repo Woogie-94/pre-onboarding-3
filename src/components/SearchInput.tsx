@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 
-import Input from "./Input";
+import Input from "./common/Input";
 import CloseSvg from "../assets/svg/CloseSvg";
 import SearchSvg from "../assets/svg/SearchSvg";
 
