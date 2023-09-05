@@ -1,10 +1,22 @@
+import { useEffect } from "react";
 import { styled } from "styled-components";
 
 import SearchInput from "../components/SearchInput";
+import useDebounce from "../hooks/useDebounce";
 import useInput from "../hooks/useInput";
+import { getSearchResult } from "../services/search";
 
 const Main = () => {
   const { value, onChange } = useInput("");
+  const debounce = useDebounce();
+
+  useEffect(() => {
+    if (value) {
+      debounce(() => {
+        getSearchResult(value).then(res => console.log(res.data));
+      }, 200);
+    }
+  }, [value, debounce]);
 
   return (
     <Wrapper>
