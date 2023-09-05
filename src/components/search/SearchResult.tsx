@@ -12,6 +12,7 @@ const SearchResult = ({ result }: Props) => {
     <Wrapper>
       <Container>
         <ItemList>
+          <ListTitle>추천 검색어</ListTitle>
           {result.map(sick => (
             <ItemWrapper key={sick.sickCd}>
               <SearchSvg width="16" height="16" fill="#A7AFB7" />
@@ -47,6 +48,13 @@ const ItemList = styled.ul`
   max-height: 500px;
 
   ${customScroll}
+`;
+
+const ListTitle = styled.h3`
+  font-size: 12px;
+  font-weight: 400;
+  color: #a7afb7;
+  padding: 0 20px;
 `;
 
 const ItemWrapper = styled.li`
