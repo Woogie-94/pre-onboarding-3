@@ -16,7 +16,7 @@ import useSearchQuery from "../queries/useSearchQuery";
 const Main = () => {
   const navigation = useNavigate();
   const [isFocus, setIsFocus] = useState(false);
-  const [focusIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
+  const [keyIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
   const { value, onChange } = useInput("");
   const { data, refetch } = useSearchQuery(value);
   const debounce = useDebounce();
@@ -49,7 +49,7 @@ const Main = () => {
         dispatch({ type: "PREV_INDEX" });
         break;
       case "Enter": {
-        navigation(data[focusIndex].sickCd, { state: { name: data[focusIndex].sickNm } });
+        navigation(data[keyIndex].sickCd, { state: { name: data[keyIndex].sickNm } });
         break;
       }
     }
@@ -73,7 +73,7 @@ const Main = () => {
         </Title>
         <div ref={focusRef} onKeyDown={handleKeyDown}>
           <SearchInput value={value} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
-          {isVisible && <SearchResult result={data} focusIndex={focusIndex} />}
+          {isVisible && <SearchResult result={data} focusIndex={keyIndex} />}
         </div>
         <MainSvg1>
           <MainBackgroundSvg_1 />
