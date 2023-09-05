@@ -6,15 +6,16 @@ import { customScroll } from "../../styles";
 
 interface Props {
   result: Sick[];
+  focusIndex: number;
 }
-const SearchResult = ({ result }: Props) => {
+const SearchResult = ({ result, focusIndex }: Props) => {
   return (
     <Wrapper>
       <Container>
         <ItemList>
           <ListTitle>추천 검색어</ListTitle>
-          {result.map(sick => (
-            <ItemWrapper key={sick.sickCd}>
+          {result.map((sick, index) => (
+            <ItemWrapper $isFocus={focusIndex === index} key={sick.sickCd}>
               <SearchSvg width="16" height="16" fill="#A7AFB7" />
               <SickName>{sick.sickNm}</SickName>
             </ItemWrapper>
@@ -57,12 +58,13 @@ const ListTitle = styled.h3`
   padding: 0 20px;
 `;
 
-const ItemWrapper = styled.li`
+const ItemWrapper = styled.li<{ $isFocus: boolean }>`
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
+  background-color: ${({ $isFocus }) => ($isFocus ? "#f4f6fa" : "transparent")};
 
   &:hover {
     background-color: #f4f6fa;

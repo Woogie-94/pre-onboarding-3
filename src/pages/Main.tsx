@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -14,6 +14,7 @@ import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
   const [isFocus, setIsFocus] = useState(false);
+  const [focusIndex, setFocusIndex] = useState(-1);
   const { value, onChange } = useInput("");
   const { data, refetch } = useSearchQuery(value);
   const debounce = useDebounce();
@@ -26,6 +27,26 @@ const Main = () => {
 
   const handleBlur = () => {
     setIsFocus(false);
+  };
+
+  const handleChange = (value: string) => {
+    setFocusIndex(-1);
+    onChange(value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.nativeEvent.isComposing || !data) {
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        setFocusIndex(prev => (prev >= data.length - 1 ? data.length - 1 : prev + 1));
+        break;
+      case "ArrowUp":
+        setFocusIndex(prev => (prev > 0 ? prev - 1 : 0));
+        break;
+    }
   };
 
   const focusRef = useRef(null);
@@ -44,9 +65,9 @@ const Main = () => {
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
-        <div ref={focusRef}>
-          <SearchInput value={value} isFocus={isFocus} onChange={onChange} onFocus={handleFocus} />
-          {isVisible && <SearchResult result={data} />}
+        <div ref={focusRef} onKeyDown={handleKeyDown}>
+          <SearchInput value={value} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
+          {isVisible && <SearchResult result={data} focusIndex={focusIndex} />}
         </div>
         <MainSvg1>
           <MainBackgroundSvg_1 />
