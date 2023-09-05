@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 import SearchSvg from "../../assets/svg/SearchSvg";
@@ -17,7 +18,9 @@ const SearchResult = ({ result, focusIndex }: Props) => {
           {result.map((sick, index) => (
             <ItemWrapper $isFocus={focusIndex === index} key={sick.sickCd}>
               <SearchSvg width="16" height="16" fill="#A7AFB7" />
-              <SickName>{sick.sickNm}</SickName>
+              <SickName to={`/${sick.sickCd}`} state={{ name: sick.sickNm }}>
+                {sick.sickNm}
+              </SickName>
             </ItemWrapper>
           ))}
         </ItemList>
@@ -71,7 +74,7 @@ const ItemWrapper = styled.li<{ $isFocus: boolean }>`
   }
 `;
 
-const SickName = styled.p`
+const SickName = styled(Link)`
   font-size: 18px;
   color: #1e2025;
 `;

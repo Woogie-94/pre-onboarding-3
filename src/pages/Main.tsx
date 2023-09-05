@@ -1,4 +1,5 @@
 import { KeyboardEvent, useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -13,6 +14,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
+  const navigation = useNavigate();
   const [isFocus, setIsFocus] = useState(false);
   const [focusIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
   const { value, onChange } = useInput("");
@@ -46,6 +48,10 @@ const Main = () => {
       case "ArrowUp":
         dispatch({ type: "PREV_INDEX" });
         break;
+      case "Enter": {
+        navigation(data[focusIndex].sickCd, { state: { name: data[focusIndex].sickNm } });
+        break;
+      }
     }
   };
 
