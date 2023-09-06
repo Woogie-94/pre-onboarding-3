@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 import MainBackgroundSvg_1 from "../assets/svg/MainBackgroundSvg_1";
@@ -13,7 +14,9 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import useSearchQuery from "../queries/useSearchQuery";
 
 const Main = () => {
+  const navigation = useNavigate();
   const [isFocus, setIsFocus] = useState(false);
+  const [keyIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
   const { value, onChange } = useInput("");
   const { data, refetch } = useSearchQuery(value);
   const debounce = useDebounce();
@@ -26,6 +29,30 @@ const Main = () => {
 
   const handleBlur = () => {
     setIsFocus(false);
+  };
+
+  const handleChange = (value: string) => {
+    dispatch({ type: "RESET_INDEX" });
+    onChange(value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.nativeEvent.isComposing || !data) {
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        dispatch({ type: "NEXT_INDEX", maxLength: data.length - 1 });
+        break;
+      case "ArrowUp":
+        dispatch({ type: "PREV_INDEX" });
+        break;
+      case "Enter": {
+        navigation(data[keyIndex].sickCd, { state: { name: data[keyIndex].sickNm } });
+        break;
+      }
+    }
   };
 
   const focusRef = useRef(null);
@@ -44,9 +71,9 @@ const Main = () => {
         <Title>
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
-        <div ref={focusRef}>
-          <SearchInput value={value} isFocus={isFocus} onChange={onChange} onFocus={handleFocus} />
-          {isVisible && <SearchResult result={data} />}
+        <div ref={focusRef} onKeyDown={handleKeyDown}>
+          <SearchInput value={value} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
+          {isVisible && <SearchResult result={data} focusIndex={keyIndex} />}
         </div>
         <MainSvg1>
           <MainBackgroundSvg_1 />
@@ -63,6 +90,21 @@ const Main = () => {
 };
 
 export default Main;
+
+type Action = { type: "NEXT_INDEX"; maxLength: number } | { type: "PREV_INDEX" } | { type: "RESET_INDEX" };
+const START_KEY_INDEX = -1;
+const keyControlReducer = (state: number, action: Action) => {
+  switch (action.type) {
+    case "NEXT_INDEX":
+      return state >= action.maxLength ? action.maxLength : state + 1;
+    case "PREV_INDEX":
+      return state <= 0 ? 0 : state - 1;
+    case "RESET_INDEX":
+      return START_KEY_INDEX;
+    default:
+      return state;
+  }
+};
 
 const Wrapper = styled.div`
   display: flex;
