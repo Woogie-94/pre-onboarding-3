@@ -5,8 +5,8 @@ import { QueryFn, QueryKey, QueryOptions } from "../core/queryType";
 
 const useQuery = <TData = unknown>(key: QueryKey, queryFn: QueryFn<TData>, options?: QueryOptions) => {
   const store = useSyncExternalStore(
-    onStoreChange => queryClient.subscribe(onStoreChange),
-    () => queryClient.getQueryData<TData>(key),
+    useCallback(onStoreChange => queryClient.subscribe(onStoreChange), []),
+    useCallback(() => queryClient.getQueryData<TData>(key), [key]),
   );
 
   const refetch = useCallback(() => {

@@ -49,6 +49,7 @@ class QueryClient {
   }
 
   async fetch<TData = unknown>(key: QueryKey, queryFn: QueryFn<TData>, options?: QueryOptions) {
+    this.updateQuerys();
     if (this.find(key)) {
       return;
     }
@@ -73,7 +74,6 @@ class QueryClient {
   }
 
   subscribe(listener: () => void) {
-    this.updateQuerys();
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
