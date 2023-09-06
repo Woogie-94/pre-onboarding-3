@@ -17,18 +17,11 @@ const Main = () => {
   const navigation = useNavigate();
   const [isFocus, setIsFocus] = useState(false);
   const [keyIndex, dispatch] = useReducer(keyControlReducer, START_KEY_INDEX);
-  const { value, onChange } = useInput("");
-  const { data, refetch } = useSearchQuery(value);
-  const debounce = useDebounce();
-
-  const isVisible = !!data?.length && isFocus;
+  const [searchValue, onChange] = useInput("");
+  const { data, refetch } = useSearchQuery(searchValue);
 
   const handleFocus = () => {
     setIsFocus(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocus(false);
   };
 
   const handleChange = (value: string) => {
@@ -56,13 +49,18 @@ const Main = () => {
   };
 
   const focusRef = useRef(null);
-  useOutsideClick(focusRef, handleBlur);
+  useOutsideClick(focusRef, () => {
+    setIsFocus(false);
+  });
 
+  const debounce = useDebounce();
   useEffect(() => {
-    if (value) {
+    if (searchValue) {
       debounce(refetch, 200);
     }
-  }, [value, debounce, refetch]);
+  }, [searchValue, debounce, refetch]);
+
+  const isVisible = !!data?.length && isFocus;
 
   return (
     <Wrapper>
@@ -72,7 +70,7 @@ const Main = () => {
           국내 모든 임상시험 검색하고 <br /> 온라인으로 참여하기
         </Title>
         <div ref={focusRef} onKeyDown={handleKeyDown}>
-          <SearchInput value={value} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
+          <SearchInput value={searchValue} isFocus={isFocus} onChange={handleChange} onFocus={handleFocus} />
           {isVisible && <SearchResult result={data} focusIndex={keyIndex} />}
         </div>
         <MainSvg1>
