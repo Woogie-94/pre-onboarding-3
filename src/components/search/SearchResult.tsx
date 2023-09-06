@@ -15,14 +15,18 @@ const SearchResult = ({ result, focusIndex }: Props) => {
       <Container>
         <ItemList>
           <ListTitle>추천 검색어</ListTitle>
-          {result.map((sick, index) => (
-            <ItemWrapper $isFocus={focusIndex === index} key={sick.sickCd}>
-              <SearchSvg width="16" height="16" fill="#A7AFB7" />
-              <SickName to={`/${sick.sickCd}`} state={{ name: sick.sickNm }}>
-                {sick.sickNm}
-              </SickName>
-            </ItemWrapper>
-          ))}
+          {result.length ? (
+            result.map((sick, index) => (
+              <ItemWrapper $isFocus={focusIndex === index} key={sick.sickCd}>
+                <SearchSvg width="16" height="16" fill="#A7AFB7" />
+                <SickName to={`/${sick.sickCd}`} state={{ name: sick.sickNm }}>
+                  {sick.sickNm}
+                </SickName>
+              </ItemWrapper>
+            ))
+          ) : (
+            <EmptyMessage>검색어와 일치하는 질환이 없습니다.</EmptyMessage>
+          )}
         </ItemList>
       </Container>
     </Wrapper>
@@ -58,7 +62,7 @@ const ListTitle = styled.h3`
   font-size: 12px;
   font-weight: 400;
   color: #a7afb7;
-  padding: 0 20px;
+  padding: 0 20px 8px;
 `;
 
 const ItemWrapper = styled.li<{ $isFocus: boolean }>`
@@ -77,4 +81,11 @@ const ItemWrapper = styled.li<{ $isFocus: boolean }>`
 const SickName = styled(Link)`
   font-size: 18px;
   color: #1e2025;
+`;
+
+const EmptyMessage = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: #a7afb7;
+  padding: 0 20px;
 `;

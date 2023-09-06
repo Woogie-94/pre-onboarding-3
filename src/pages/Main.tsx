@@ -60,7 +60,7 @@ const Main = () => {
     }
   }, [searchValue, debounce, refetch]);
 
-  const isVisible = !!data?.length && isFocus;
+  const isVisible = !!data && isFocus;
 
   return (
     <Wrapper>
