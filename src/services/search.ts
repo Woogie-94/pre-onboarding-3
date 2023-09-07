@@ -7,5 +7,5 @@ export interface Sick {
 
 export const getSearchResult = (value: string) => {
   console.info("calling api");
-  return axios.get<Sick[]>("http://localhost:4000/sick", { params: { q: value } });
+  return axios.get<Sick[]>("https://assignment-api-bay.vercel.app/sick", { params: { q: value } });
 };
